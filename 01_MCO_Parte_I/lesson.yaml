@@ -168,8 +168,8 @@
    La pendiente de hp es -.068 en esta regresión. ¿Cómo podemos interpretar esto?
    
   AnswerChoices: Cuando hp = 0, predecimos que mpg = -.068.; Una disminución en caballos de fuerza de -.068 está asociada con un aumento de una unidad en mpg; Un aumento en hp de una desviación estándar está asociado con una disminución de -.068 mpg; Un aumento en hp de una unidad está asociado con una disminución de -.068 mpg.
-  CorrectAnswer: Cuando hp = 0, predecimos que mpg = -.068.
-  AnswerTests: omnitest(correctVal='Cuando hp = 0, predecimos que mpg = -.068.')
+  CorrectAnswer: Un aumento en hp de una unidad está asociado con una disminución de -.068 mpg.
+  AnswerTests: omnitest(correctVal='Un aumento en hp de una unidad está asociado con una disminución de -.068 mpg.')
   Hint: Piense en cómo interpretaría normalmente el coeficiente de pendiente en una línea.
 
 - Class: mult_question
