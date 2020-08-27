@@ -1,0 +1,273 @@
+- Class: meta
+  Course: Econometría I
+  Lesson: Mínimos Cuadrados ordinarios - Parte I
+  Author: Paula Pereda
+  Type: Standard
+  Organization: Universidad de Montevideo
+  Version: 2.4.5
+
+- Class: text
+  Output: |-
+   Bienvenidos a Mínimos Cuadrados - Parte I.
+
+   En esta lección de Swirl recorreremos ...
+
+   - Cómo cargar un conjunto de datos
+
+   - Cómo mirar ese conjunto de datos
+
+   - Cómo ejecutar una regresión de mínimos cuadrados ordinarios con dos variables (bivariada)
+
+   - Cómo mirar los resultados de la regresión
+
+   - Cómo graficar los resultados de la regresión
+
+- Class: text
+  Output: |-
+    Esta lección usará los paquetes **tidyverse**, **vtable**, **jtools** y **huxtable**.
+  
+    (no trabajaremos con **huxtable** directamente, pero lo necesitaremos instalado para usar **jtools**)
+  
+    ¡Así que asegúrese de que estén instalados primero!
+    
+    Si no están instalados, puede presionar Escape o escribir bye() para salir de este curso ahora y luego instalarlos con install.packages (c('tidyverse', 'vtable', 'jtools', 'huxtable')) antes comenzando de nuevo. Puede volver a ingresar al curso escribiendo swirl()
+
+- Class: cmd_question
+  Output: |- 
+   Empecemos cargando los paquetes que necesitamos.
+
+   Utilice la función library() para cargar el paquete tidyverse.
+  CorrectAnswer:  library(tidyverse)
+  AnswerTests: omnitest (correctExpr = 'library(tidyverse)')
+  Hint: tome el nombre del paquete e introdúzcalo en la función library().
+
+- Class: cmd_question
+  Output: |- 
+   ¡Bien! Ahora vamos con vtable.
+  CorrectAnswer: library(vtable)
+  AnswerTests: omnitest(correctExpr='library(vtable)')
+  Hint: tome el nombre del paquete e introdúzcalo en la función library().
+
+- Class: cmd_question
+  Output: |- 
+   Y finalmente... jtools.
+  CorrectAnswer: library(jtools)
+  AnswerTests: omnitest(correctExpr='library(jtools)')
+  Hint: tome el nombre del paquete e introdúzcalo en la función library().
+
+- Class: cmd_question
+  Output: |-
+   Ahora vamos a cargar algunos datos.
+
+   Hay dos formas principales de cargar datos: desde un *archivo* o desde un *paquete*.
+
+   Primero trabajemos desde un paquete.
+
+   Muchos paquetes vienen con datos precargados. Puede ver qué conjuntos de datos hay escribiendo data( y viendo lo que aparece.
+                                                                                                      
+   Por ahora, cargue el conjunto de datos precargado mtcars usando la función data().
+  CorrectAnswer: data(mtcars)
+  AnswerTests: any_of_exprs ('data(mtcars)', 'data("mtcars")')
+  Hint: tome el nombre del conjunto de datos, mtcars, y envíelo a la función data().
+                                                                                                      
+                                                                                                   
+- Class: cmd_question
+  Output: |-
+    Cuando los datos provienen de un paquete, se muestra como un objeto con el nombre con el que lo llamó.
+  
+    Además, los datos que obtiene de esta manera a menudo vienen con un archivo de ayuda.
+  
+    Utilice help(mtcars) para ver descripciones de todas las variables.
+  CorrectAnswer: help(mtcars)
+  AnswerTests: omnitest (correctExpr = 'help(mtcars)')
+  Hint: simplemente escriba help(mtcars).
+  
+- Class: cmd_question
+  Output: |-
+    Veamos los datos también de otras formas.
+  
+    Intente hacer clic en el objeto de datos en la ventana del entorno para verlo como una hoja de cálculo.
+  
+  CorrectAnswer: View(mtcars)
+  AnswerTests: omnitest (correctExpr = 'View(mtcars)')
+  Hint: simplemente haga clic en "mtcars" en la pestaña Environment en la parte superior derecha. O escriba View(mtcars).
+
+
+- Class: cmd_question
+  Output: |-
+
+   Luego, envíelo a la función vtable() para obtener información sobre todas las variables.
+  CorrectAnswer: vtable(mtcars)
+  AnswerTests: expr_uses_func('vtable')
+  Hint: tome el nombre del conjunto de datos, mtcars, y envíelo a la función vtable().
+
+- Class: exact_question
+  Output: ¿Cuál es el valor más alto que toma la variable cyl?
+  CorrectAnswer: 8
+  AnswerTests: omnitest(correctVal = 8)
+  Hint: mire la columna "Values" de la vtable. O si lo prefiere, haga max(mtcars$cyl).
+
+- Class: cmd_question
+  Output: |- 
+   La otra forma de obtener datos en R es cargándolos desde un archivo.
+
+   El archivo podría estar en su computadora o podría estar en línea.
+
+   Generalmente, esto requiere que tome la ruta del archivo o URL y la convierta en un string colocándola entre comillas ('' o "").
+
+   Obtendremos nuestro archivo de datos de https://vincentarelbundock.github.io/Rdatasets/csv/Ecdat/USFinanceIndustry.csv
+   
+   Convierta esa URL en una cadena usando comillas.
+   
+  CorrectAnswer: "'https://vincentarelbundock.github.io/Rdatasets/csv/Ecdat/USFinanceIndustry.csv'"
+  AnswerTests: omnitest(correctVal = 'https://vincentarelbundock.github.io/Rdatasets/csv/Ecdat/USFinanceIndustry.csv')
+  Hint: simplemente escriba una cita ('o "), luego pegue la URL y luego ponga la misma cita final.
+
+- Class: cmd_question
+  Output: |-
+   Ahora ponga esa cadena en la función read_csv() (del tidyverse).
+   
+   Esto leerá los datos de Internet. Sin embargo, también necesitamos *almacenar* los datos como un objeto en R.
+   
+   Entonces use <- para guardar los datos como df.
+   
+  CorrectAnswer: df <- read_csv('https://vincentarelbundock.github.io/Rdatasets/csv/Ecdat/USFinanceIndustry.csv')
+  AnswerTests: identical(df,suppressMessages(suppressWarnings(read_csv('https://vincentarelbundock.github.io/Rdatasets/csv/Ecdat/USFinanceIndustry.csv'))))
+  Hint: |-
+   
+   Sabemos que podemos almacenar objetos usando el formato
+   
+   a <- 2
+   
+   que almacena el número 2 en el objeto a.
+   
+   Ahora queremos almacenar los resultados de nuestra función read_csv() en el objeto df.
+
+- Class: cmd_question
+  Output: |-
+   Ahora podemos poner esa fórmula en la función lm() para correr una regresión.
+   
+   Utilice la función lm(). Ponga la fórmula mpg ~ hp allí primero.
+   
+   Luego, especifique data = mtcars, ya que está utilizando el conjunto de datos mtcars.
+   
+  CorrectAnswer: lm(mpg~hp, data = mtcars)
+  AnswerTests: omnitest(correctVal=lm(mpg~hp, data = mtcars))
+  Hint: lm() toma dos argumentos acá. El primero es mpg~hp. Luego utilice una coma para separar los argumentos. Y luego data = mtcars.
+
+- Class: exact_question
+  Output: En esta recta MCO, ¿cuál es la pendiente en hp? Redondea al lugar de las milésimas (0,001)
+  CorrectAnswer: -.068
+  AnswerTests: omnitest(correctVal=-.068)
+  Hint: El coeficiente de pendiente para hp se enumera debajo de hp en la salida de regresión.
+
+- Class: mult_question
+  Output: |- 
+   En los datos de mtcars, "mpg" son las millas por galón de un automóvil en particular, y "hp" es la potencia de ese automóvil.
+  
+   La pendiente de hp es -.068 en esta regresión. ¿Cómo podemos interpretar esto?
+   
+  AnswerChoices: Cuando hp = 0, predecimos que mpg = -.068.; Una disminución en caballos de fuerza de -.068 está asociada con un aumento de una unidad en mpg; Un aumento en hp de una desviación estándar está asociado con una disminución de -.068 mpg; Un aumento en hp de una unidad está asociado con una disminución de -.068 mpg.
+  CorrectAnswer: Cuando hp = 0, predecimos que mpg = -.068.
+  AnswerTests: omnitest(correctVal='Cuando hp = 0, predecimos que mpg = -.068.')
+  Hint: Piense en cómo interpretaría normalmente el coeficiente de pendiente en una línea.
+
+- Class: mult_question
+  Output: |- 
+   En los datos de mtcars, "mpg" son las millas por galón de un automóvil en particular, y "hp" es la potencia de ese automóvil.
+  
+   El intercepto es 30.10 en esta regresión. ¿Cómo podemos interpretar esto?
+   
+  AnswerChoices: Cuando hp = 0, predecimos que mpg = 30.10.; Una disminución en caballos de fuerza de 30.10 está asociada con un aumento de una unidad en mpg.; Un aumento en hp de una desviación estándar se asocia con un aumento de 30.10 en mpg.; Un aumento en hp de una unidad se asocia con un aumento de 30.10 en mpg.
+  CorrectAnswer: Cuando hp = 0, predecimos que mpg = 30.10.
+  AnswerTests: omnitest(correctVal='Cuando hp = 0, predecimos que mpg = 30.10.')
+  Hint: Piense en cómo interpretaría normalmente el intercepto de una recta.
+
+
+- Class: cmd_question
+  Output: |-
+   La mayoría de las veces, queremos ver una descripción más completa de la regresión, no solo los coeficientes.
+   Para ello, necesitaremos almacenar nuestro objeto de regresión para poder pasarlo a otras funciones.
+   Vuelva a ejecutar la misma regresión que en el último paso, pero guárdela en el objeto mi_modelo.
+   
+  CorrectAnswer: mi_modelo <- lm(mpg~hp, data = mtcars)
+  AnswerTests: ifelse(exists('mi_modelo'),identical(predict(mi_modelo), predict(lm(mpg~hp, data = mtcars))),FALSE)
+  Hint: Tome la función lm() que usó en el último paso (puede presionar la tecla hacia arriba para reutilizar el código) y use <- para almacenarlo como mi_modelo.
+
+- Class: cmd_question
+  Output: |-
+   Veamos una tabla que resume la regresión.
+   Primero, use la función summary() de R base para resumir su regresión.
+  CorrectAnswer: summary(mi_modelo)
+  AnswerTests: expr_uses_func('summary')
+  Hint: Tome mi_modelo y colóquelo en la función summary().
+
+- Class: cmd_question
+  Output: A continuación, veamos mejor usando export_summs() del paquete jtools.
+  CorrectAnswer: export_summs(mi_modelo)
+  AnswerTests: expr_uses_func('export_summs')
+  Hint: tome su objeto mi_modelo y colóquelo en la función export_summs().
+
+- Class: cmd_question
+  Output: |- 
+  
+   Ahora obtengamos un buen gráfico de los resultados de nuestra regresión usando effect_plot() del paquete jtools.
+   
+   effect_plot() necesita tres cosas:
+   
+   1. Su objeto de regresión.
+   
+   2. El nombre de la variable X como una string ("X") para la opción pred =.
+   
+   3. Si desea que los puntos se tracen además de la línea (y lo hacemos), establezca plot.points = TRUE.
+   
+  CorrectAnswer: effect_plot(mi_modelo, pred = 'hp', plot.points = TRUE)
+  AnswerTests: omnitest(correctVal=effect_plot(mi_modelo, pred = 'hp', plot.points = TRUE))
+  Hint: effect_plot() es como nuestras otras funciones excepto que necesitamos especificar múltiples opciones. Simplemente separe cada opción con una coma.
+
+- Class: cmd_question
+  Output: |-
+   ¡No crea que nos olvidamos de los datos que cargamos con df antes!
+   Vamos a ver cómo las ganancias corporativas predicen las ganancias del sector financiero.
+   
+   Corra una regresión utilizando los datos df con Financial como variable dependiente y CorporateProfitsAdj como variable independiente, y guárdelo como reg2.
+  CorrectAnswer: reg2 <- lm(Financial ~ CorporateProfitsAdj, data = df)
+  AnswerTests: ifelse(exists('reg2'),identical(predict(reg2), predict(lm(Financial ~ CorporateProfitsAdj, data = df))),FALSE)
+  Hint: use exactamente el mismo código que con la regresión mtcars, pero ahora los datos son df, tenemos Financial en lugar de mpg, y CorporateProfitsAdj en lugar de hp.
+  
+- Class: cmd_question
+  Output: |- 
+   Como una última cosa, vamos a hacer algo extraño.
+   
+   Use el siguiente código para agregar una nueva variable llamada ProfitsHalf que divide CorporateProfitsAdj entre 2 y guárdelo como el nuevo conjunto de datos df2:
+   
+   df2 <- df %>%
+       mutate(ProfitsHalf = CorporateProfitsAdj/2)
+       
+  CorrectAnswer: df2 <- df %>%
+       mutate(ProfitsHalf = CorporateProfitsAdj/2)
+  AnswerTests: identical(df2, df %>% mutate(ProfitsHalf = CorporateProfitsAdj/2))
+  Hint: Solo copien mi código.
+
+- Class: cmd_question
+  Output: Ahora regrese Financial on ProfitsHalf utilizando el conjunto de datos df2 y almacene el resultado como reg3.
+  CorrectAnswer: reg3 <- lm(Financial ~ ProfitsHalf, data = df2)
+  AnswerTests: ifelse(exists('reg3'),identical(predict(reg3), predict(lm(Financial ~ ProfitsHalf, data = df2))),FALSE)
+  Hint: Use exactamente el mismo código de regresión que la última vez, pero use data = df2 ahora y reemplace CorporateProfitsAdj con ProfitsHalf. ¿Olvidaste guardarlo como reg3? Si sobrescribe accidentalmente reg2, es posible que desee volver a crearlo primero.
+
+- Class: cmd_question
+  Output: Coloque reg2 y reg3 en export_summs() para que pueda ver los resultados uno al lado del otro.
+  CorrectAnswer: export_summs(reg2, reg3)
+  AnswerTests: omnitest(correctVal=export_summs(reg2, reg3))
+  Hint: Solo escriba export_summs(reg2, reg3)
+
+- Class: mult_question
+  Output: |- 
+   El coeficiente de ProfitsHalf en el modelo 2 (de df2) es exactamente dos veces mayor que el coeficiente de CorporateProfitsAdj en el modelo 1 (de df).
+   
+   ¿Por qué tiene sentido esta duplicación?
+   
+  AnswerChoices: Porque el significado de "un cambio de una unidad en X" se ha duplicado; Debido a la variación del muestreo; Debido a que MCO usa residuos cuadrados, lo que lleva a duplicar el coeficiente; Porque cuando la variable se ha reducido a la mitad, la línea tuvo que moverse hacia abajo para acomodarla.
+  CorrectAnswer: Porque el significado de "un cambio de una unidad en X" se ha duplicado
+  AnswerTests: omnitest(correctVal='Porque el significado de "un cambio de una unidad en X" se ha duplicado')
+  Hint: Piense en lo que significa el coeficiente de pendiente en MCO en términos de la variable X.
