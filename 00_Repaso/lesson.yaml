@@ -1,0 +1,133 @@
+- Class: meta
+  Course: Econometría I
+  Lesson: Repaso de estadística y probabilidad
+  Author: Paula Pereda
+  Type: Standard
+  Organization: Universidad de Montevideo
+  Version: 2.4.5
+
+- Class: text
+  Output: |-
+   Bienvenidos a Repaso de estadística y probabilidad.
+
+- Class: text
+  Output: |-
+    Esta lección usará los paquetes **wooldridge** y **tidyverse**.
+  
+    ¡Así que asegúrese de que estén instalados primero!
+    
+    Si no están instalados, puede presionar Escape o escribir bye() para salir de este curso ahora y luego instalarlos con install.packages (c('tidyverse', 'wooldridge')) antes comenzando de nuevo. Puede volver a ingresar al curso escribiendo swirl()
+
+- Class: cmd_question
+  Output: |- 
+   Empecemos cargando los paquetes que necesitamos.
+
+   Utilice la función library() para cargar el paquete tidyverse.
+  CorrectAnswer:  library(tidyverse)
+  AnswerTests: omnitest (correctExpr = 'library(tidyverse)')
+  Hint: tome el nombre del paquete e introdúzcalo en la función library().
+
+- Class: cmd_question
+  Output: |- 
+   ¡Bien! Ahora vamos con wooldridge.
+  CorrectAnswer: library(wooldridge)
+  AnswerTests: omnitest(correctExpr='library(wooldridge)')
+  Hint: tome el nombre del paquete e introdúzcalo en la función library().
+
+- Class: cmd_question
+  Output: |-
+   Ahora vamos a cargar algunos datos.
+
+   Hay dos formas principales de cargar datos: desde un *archivo* o desde un *paquete*.
+
+   PEn este caso, cargaremos datos desde un paquete.
+
+   Muchos paquetes vienen con datos precargados. Puede ver qué conjuntos de datos hay escribiendo data( y viendo lo que aparece.
+                                                                                                      
+   Por ahora, cargue el conjunto de datos precargado wage1 usando la función data().
+  CorrectAnswer: data(wage1)
+  AnswerTests: any_of_exprs ('data(wage1)', 'data("wage1")')
+  Hint: tome el nombre del conjunto de datos, wage1, y envíelo a la función data().
+                                                                                                      
+                                                                                                   
+- Class: cmd_question
+  Output: |-
+    Cuando los datos provienen de un paquete, se muestra como un objeto con el nombre con el que lo llamó.
+  
+    Además, los datos que obtiene de esta manera a menudo vienen con un archivo de ayuda.
+  
+    Utilice help(wage1) para ver inspeccionar la base.
+  CorrectAnswer: help(wage1)
+  AnswerTests: omnitest (correctExpr = 'help(wage1)')
+  Hint: simplemente escriba help(mtcars).
+  
+- Class: cmd_question
+  Output: |-
+    Veamos los datos de otra forma.
+  
+    Intente hacer clic en el objeto de datos en la ventana del entorno para verlo como una hoja de cálculo.
+  
+  CorrectAnswer: View(wage1)
+  AnswerTests: omnitest (correctExpr = 'View(wage1)')
+  Hint: simplemente haga clic en "wage1" en la pestaña Environment en la parte superior derecha. O escriba View(mtcars).
+
+- Class: cmd_question
+  Output: |-
+  
+   Sabiendo que para calcular la media, se emplea la función mean de la siguiente manera: mean(wage1$wage)
+   
+   ¿Cuánto es el salario por hora promedio en este set de datos? Utilice tres dígitos después de la coma. 
+ 
+  CorrectAnswer: 5.896
+  AnswerTests: omnitest(correctVal = 5.896)
+  Hint: simplemente use el resultado de mean(wage1$wage) con tres dígitos después de la coma.
+
+
+- Class: cmd_question
+  Output: |-
+
+   Sabiendo que para calcular la mediana, se emplea la función median(), escriba cómo calcularía la mediana del salario por hora.
+   
+  CorrectAnswer: median(wage1$wage)
+  AnswerTests: omnitest (correctExpr = 'median(wage1$wage)')
+  Hint: repita el procedimiento para hallar la media pero para la mediana.
+
+- Class: cmd_question
+  Output: |-
+
+   Sabiendo que para calcular el rango intercuartílico, se emplea la función IQR(), escriba cómo calcularía el rango intercuartílico del salario por hora.
+   
+  CorrectAnswer: IQR(wage1$wage)
+  AnswerTests: omnitest (correctExpr = 'IQR(wage1$wage)')
+  Hint: repita el procedimiento para hallar la media y la mediana pero para el rango intercuartílico.
+
+- Class: cmd_question
+  Output: |-
+  
+   ¿Cuánto es la diferencia entre el tercer y el primer cuartil de la variable wage? Utilice dos dígitos después de la coma. 
+ 
+  CorrectAnswer: 3.55
+  AnswerTests: omnitest(correctVal = 3.55)
+  Hint: la diferencia entre el tercer y el primer cuartil de una distribución es el rango intercuartílico.
+
+- Class: cmd_question
+  Output: |-
+  
+   En R podemos calcular probabilidades de determinados eventos para una variable X cuando ya sabemos cómo se distribuye la misma.
+  
+   Ejemplos de funciones de distribución incluidas en R son:
+  
+   - Normal: pnorm()
+   - Binomial: pbinom()
+   - etc.
+  
+   Por ejemplo, para computar la siguiente probabilidad P(4 <= X <= 7) con X ∼ B(10,0.5), se utiliza pbinom() de la siguiente manera:
+  
+   pbinom(size = 10, prob = 0.5, q = 7) - pbinom(size = 10, prob = 0.5, q = 3) 
+
+   Utilizando tres dígitos después de la coma, ¿cuánto es la probabilidad de este suceso?
+  
+  CorrectAnswer: 0.773
+  AnswerTests: omnitest(correctVal = 0.773)
+  Hint: simplemente use el resultado de pbinom(size = 10, prob = 0.5, q = 7) - pbinom(size = 10, prob = 0.5, q = 3) con tres dígitos después de la coma.
+
